@@ -1,0 +1,30 @@
+React is often mentioned in the same breath as other Javascript frameworks, but "React vs Angular" doesn't make 
+sense because they aren't directly comparable things. Angular is a complete framework (including a view layer), React is not.
+
+React gives you a template language and some function hooks to essentially render HTML. That's all React outputs, HTML. 
+Your bundles of HTML / Javascript, called "components", are allowed things like storing their own internal state in 
+memory (such as which tab is selected in a tab view), but in the end you just output HTML. You absolutely cannot build 
+a fully functional dynamic application with React alone.
+
+Benefits of React
+
+1.	You can always tell how your component will render by looking at one source file.
+2.	Bundling Javascript and HTML into JSX makes components easily understandable.
+3.	You can render React on the server.
+
+No so beneficial side: 
+
+1. You DO NOT GET any of the following:
+
+        •	An event system (other than vanilla DOM events)
+        •	Any AJAX capabilities whatsoever
+        •	Any form of a data layer
+        •	Promises
+        •	Any application framework at all
+        •	Any idea how implement the above
+        
+2. React is large for how little you get, including how little cross browser support.
+
+React is about 35 KB gzipped over the wire.
+React is a comparable size with Angular, even though Angular is a complete application framework. 
+React is frankly bloated for how little functionality you get. 
