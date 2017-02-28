@@ -28,3 +28,12 @@ No so beneficial side:
 React is about 35 KB gzipped over the wire.
 React is a comparable size with Angular, even though Angular is a complete application framework. 
 React is frankly bloated for how little functionality you get. 
+
+*****Props
+
+Props take on several roles:
+
+1. Props can become HTML attributes. If a prop matches a known HTML attribute then it will be added to the final HTML element in the DOM.
+2. Props passed to createElement() become values stored in a prop object as an instance property of React.createElement() 
+        instances (i.e., [INSTANCE].props.[NAME OF PROP]). Props by and large are used to input values into components.
+3. A few special props have side effects (e.g., key, ref, and dangerouslySetInnerHTML)
