@@ -65,3 +65,204 @@ Instead of writing the following, which uses React.createElement():
 Using JSX, you can write this:
 
         return <div>Hello {this.props.name}</div>;
+
+***** React Node
+
+The primary type or value that is created when using React is known as a React node. A React node is defined as:
+a light, stateless, immutable, virtual representation of a DOM node.
+React nodes are not real DOM nodes (e.g., text or element nodes) themselves, but a representation of a potential DOM node. The 
+representation is considered the virtual DOM. In a nutshell, React is used to define a virtual DOM using React nodes, that fuel
+React components, that can eventually be used to create a real DOM structured or other structures (e.g., React Native).
+
+React nodes can be created using JSX or JavaScript.
+
+Creating React nodes using JavaScript is as simple as calling the React.createElement(type,props,children) function and passing it a set of arguments defining an actual DOM node (e.g., type = an html element e.g., <li> or custom element e.g., <my-li>).
+
+Here are some examples using the React.createElement() arguments below:
+•	type (string | React.createClass()):
+
+Can be a string which represents an HTML element (or custom HTML element) or React component instance (i.e., an instance of React.createClass())
+•	props (null | object):
+
+Can be null or an object containing attributes/props and values
+•	children (null | string | React.createClass() | React.createElement()):
+
+Children can be null, a string that gets turned into a text node, an instance of React.createClass() or React.createElement()
+
+Example
+
+var reactNodeLi = React.createElement('li', {id:'li1'}, 'one');
+
+Notice that the first argument defines the HTML element I want to represent. The second argument defines the attributes/props on 
+the <li>. And the third argument defines what the node inside of the element will be. In this case, I am simply placing a child 
+text node (i.e., 'one') inside the <li>. The last argument that becomes a child of the node being created can be 
+
+•	A React text node
+•	A React element node, or 
+•	A React component instance.
+
+To create a virtual DOM we have to actually render the React element node to a real DOM. To do this we use the ReactDOM.render() function.
+
+ReactDOM.render(reactNodeLi, document.getElementById('app'));
+
+The above code, loosely stated, invokes the following:
+1.	Create a virtual DOM constructed from the React element node passed in (reactNodeLi)
+2.	Use the virtual DOM to re-construct a real DOM branch
+3.	Insert the real DOM branch (i.e., <li id="li1">one</li>) into the DOM as a child node of <div id="app"></div>. 
+
+In other words, the HTML DOM changes from this:
+
+<div id="app"></div>
+
+to this:
+
+<div id="app">
+    //note that React added the react data-reactid attribute
+    <li id="li1" data-reactid=".0">one</li>
+</div>
+
+Example of a structure:
+
+// Create React element <li>'s
+var rElmLi1 = React.createElement('li', {id:'li1'}, 'one'),
+    rElmLi2 = React.createElement('li', {id:'li2'}, 'two'),
+    rElmLi3 = React.createElement('li', {id:'li3'}, 'three');
+
+// Create <ul> React element and add child
+// React <li> elements to it
+
+var reactElementUl = React.createElement('ul', {className:'myList'}, rElmLi1, rElmLi2, rElmLi3);
+
+Before rendering the unordered list to the DOM I think it is worth showing that the above code can be simplified by 
+using the React.createElement() in place of variables. This also demonstrates how a hierarchy or DOM branch can 
+be defined using JavaScript.
+
+var reactElementUl = React.createElement(
+    'ul', {
+        className: 'myList'
+    },
+    React.createElement('li', {id: 'li1'}, 'one'),
+    React.createElement('li', {id: 'li2'}, 'two'),
+    React.createElement('li', {id: 'li3'}, 'three')
+);
+When the above code is rendered to the DOM the resulting HTML will look like:
+<ul class="myList" data-reactid=".0">
+    <li id="li1" data-reactid=".0.0">one</li>
+    <li id="li2" data-reactid=".0.1">two</li>
+    <li id="li3" data-reactid=".0.2">three</li>
+</ul>
+
+React nodes are just JavaScript objects in a tree that represent real DOM nodes inside of a virtual DOM tree. The virtual DOM is then used to construct an actual DOM branch in an HTML page.
+
+Recap
+
+•	The type argument passed to React.createElement(type, props, children) can be 
+o	A string indicating a standard HTML element (e.g., 'li' = <li></li>), or 
+o	A custom element (e.g., 'foo-bar' = <foo-bar></foo-bar>, or a React component instance (i.e., an instance of React.createClass().
+•	These are the standard HTML elements that React supports (i.e. these elements passed as a string type to createElement()). They 
+        create the associating standard HTML element in the DOM):
+        
+                a abbr address area article aside audio b base bdi bdo big blockquote body br
+                button canvas caption cite code col colgroup data datalist dd del details dfn
+                dialog div dl dt em embed fieldset figcaption figure footer form h1 h2 h3 h4 h5
+                h6 head header hgroup hr html i iframe img input ins kbd keygen label legend li
+                link main map mark menu menuitem meta meter nav noscript object ol optgroup
+                option output p param picture pre progress q rp rt ruby s samp script section
+                select small source span strong style sub summary sup table tbody td textarea
+                tfoot th thead time title tr track u ul var video wbr
+
+***** Rendering to the DOM
+
+React provides the ReactDOM.render() function from react-dom.js that can be used to render React nodes to the DOM.
+In the code example below, using ReactDOM.render(), the '<li>' and '<foo-bar>' React nodes are rendered to the DOM:
+
+JavaScript
+
+//React node, which represents an actual HTML DOM node
+var HTMLLi = React.createElement('li', {className:'bar'}, 'foo');
+
+//React node, which represents a custom HTML DOM node
+var HTMLCustom = React.createElement('foo-bar', {className:'bar'}, 'foo');
+
+//Render the HTMLLI React node to <div id="app1"></div>
+ReactDOM.render(HTMLLi, document.getElementById('app1'));
+
+//Render the HTMLCustom React node to <div id="app2"></div>
+ReactDOM.render(HTMLCustom, document.getElementById('app2'));
+
+HTML
+
+<div id="app1"></div>
+
+<div id="app2"></div>
+Once rendered to the DOM, the updated HTML will be:
+<body>
+    <div id="app1"><li class="bar" data-reactid=".0">foo</li></div>
+    <div id="app2"><foo-bar classname="bar" children="foo" data-reactid=".1">foo</foo-bar></div>
+</body>
+
+• Rendering to an HTML DOM is only one option with React, other rendering APi's are available. For example, it is also possible to render to a string (i.e., ReactDOMServer.renderToString()) on the server-side. 
+• Re-rendering to the same DOM element will only update the current child nodes if a change has been made or a new child node has been added.
+
+
+***** Node Attributes/Props
+
+Props take on several roles:
+
+1.	Props can become HTML attributes. If a prop matches a known HTML attribute then it will be added to the final HTML element in the DOM.
+2.	Props passed to createElement() become values stored in a prop object as an instance property of React.createElement() instances (i.e., [INSTANCE].props.[NAME OF PROP]). Props are normally used to input values into components.
+3.	A few special props have side effects (e.g., key, ref, and dangerouslySetInnerHTML)
+
+Props - an object containing name value properties (a.k.a, props).
+
+In one sense you can think of props as the configuration options for React nodes and in another sense you can think of them as HTML attributes.
+Example:
+
+var reactNodeLi = React.createElement('li',
+    {
+        foo: 'bar',
+        id: 'li1',
+        // Note the use of the JS className property to change the 
+        // class attribute below
+        className: 'blue',
+        'data-test': 'test',
+        'aria-role' :'listitem',
+        // Note use of JS camel-cased CSS property backgroundColor below
+        style: {backgroundColor:'red'}
+    },
+    'text'
+);
+
+When the above code is rendered to an HTML page the actual HTML created will look like:
+
+<li id="li1" data-test="test" class="blue" aria-role="listitem" style="background-color:red;" data-reactid=".0">text</li>
+
+React attributes/props not only translate to real HTML attributes props, they become configuration values that are passed to React 
+components. Passing a prop into a React node is different from defining a prop on a component to be used as configuration input within
+a component.
+
+Recap
+
+•	Leaving an attribute/prop blank results in that attribute value becoming true (e.g., id="" becomes id="true" and test becomes test="true")
+•	If an attribute/prop is duplicated the last one defined wins.
+•	If you pass props/attributes to native HTML elements that do not exist in the HTML specification React will not render them. However, if you use a custom element (i.e., not a standard HTML element) then arbitrary/custom attributes will be added to custom elements (e.g., <x-my-component custom-attribute="foo"/>).
+•	The class attribute has to be written className
+•	The for attribute has to be written htmlFor
+•	The style attribute takes a reference to an object of camel-cased style properties
+•	HTML form elements (e.g., <input></input>, <textarea></textarea>, etc.) created as React nodes support a few attributes/props that are affected by user interaction. These are: value, checked, and selected.
+•	React offers the key, ref, and dangerouslySetInnerHTML attributes/props that don't exist in DOM and take on a unique role/function.
+•	All attributes are camel-cased (e.g., accept-charset is written as acceptCharset) which differs from how they are written in HTML.
+•	The following are the HTML attributes that React supports (shown in camel-case):
+                accept acceptCharset accessKey action allowFullScreen allowTransparency alt
+                async autoComplete autoFocus autoPlay capture cellPadding cellSpacing challenge
+                charSet checked classID className colSpan cols content contentEditable
+                contextMenu controls coords crossOrigin data dateTime default defer dir
+                disabled download draggable encType form formAction formEncType formMethod
+                formNoValidate formTarget frameBorder headers height hidden high href hrefLang
+                htmlFor httpEquiv icon id inputMode integrity is keyParams keyType kind label
+                lang list loop low manifest marginHeight marginWidth max maxLength media
+                mediaGroup method min minLength multiple muted name noValidate nonce open
+                optimum pattern placeholder poster preload radioGroup readOnly rel required
+                reversed role rowSpan rows sandbox scope scoped scrolling seamless selected
+                shape size sizes span spellCheck src srcDoc srcLang srcSet start step style
+                summary tabIndex target title type useMap value width wmode wrap
